@@ -1,0 +1,536 @@
+---
+title: "STAT7055_2021-S1_Assign"
+output: html_document
+author: u7174865
+---
+
+
+## Question 1
+
+```{r}
+load("AssignmentData.RData")
+
+```
+
+### (a)
+
+```{r}
+
+df_test4 <- as.data.frame(Q1.df$Test4)
+names(df_test4)<-c("Test4") #rename the column names
+head(df_test4)
+
+```
+**The sample median of the scores for Test 4 is 20.25**
+
+```{r}
+median(df_test4$Test4)
+```
+**The sample range of the scores for Test 4 is 44.1-2.2 = 41.9**
+
+```{r}
+range(df_test4$Test4)
+
+44.1-2.2
+```
+
+**The sample coefficient of variation of the scores for Test 4 is 0.2212**
+
+```{r}
+sd(df_test4$Test4)/mean(df_test4$Test4)
+```
+### (b)
+
+**Create the boxplot**
+```{r}
+boxplot(df_test4$Test4, border=c("red"),main = "The boxplot for the scores of Test4",xlab = "Test4")
+
+```
+**Create the histogram of Test 4 **
+
+```{r}
+hist(df_test4$Test4,main = "Histogram for the scores of Test4",xlab="Test4 Scores",ylab="Density", col = "blue",freq = FALSE)
+rug(jitter(df_test4$Test4))
+lines(density(df_test4$Test4),col="red",lwd=2)
+```
+Based on the two graphs, boxplot, and histogram, we can know the scores of Test 4 corresponds to the normal distribution. From the boxplot, we can know the median approximate to 20. Also, the median is at the middle position between the lower quartile and upper quartile which means the numbers of the data which is smaller than the median and the number of the data which is larger than the median have a similar number. Then from the histogram, we can directly know that the graph shows a typical normal distribution. I add the line and rug() method so that we can get a direct view. Also, we can know that most of the data are close to 20. The boxplot has outliers. The histogram shows like approximate to symmetric
+
+### (c)
+
+```{r}
+test4_computing =as.data.frame(Q1.df[which(Q1.df$Degree == 'Computing'),c(2,6)])
+names(test4_computing) <- c('Degree','Test4')
+head(test4_computing)
+test4_engineering =as.data.frame(Q1.df[which(Q1.df$Degree == 'Engineering'),c(2,6)])
+names(test4_engineering) <- c('Degree','Test4')
+head(test4_engineering)
+```
+
+**The histogram for applicants who have an undergraduate degree in Computing**
+
+```{r}
+hist(test4_computing$Test4,main = "Histogram for the scores of Test4 --- Computing Degree",xlab="Test4 Scores--Computing",ylab="Density", col = "pink",freq = FALSE)
+rug(jitter(test4_computing$Test4))
+lines(density(test4_computing$Test4),col="red",lwd=2)
+```
+
+**The histogram for applicants who have an undergraduate degree in Engineering**
+
+```{r}
+hist(test4_engineering$Test4,main = "Histogram for the scores of Test4 --- Engineering Degree",xlab="Test4 Scores--Engineering",ylab="Density", col = "yellow",freq = FALSE)
+rug(jitter(test4_engineering$Test4))
+lines(density(test4_engineering$Test4),col="red",lwd=2)
+```
+
+**Similarities:**
+
+Most of the data of the two groups is between 15 and 25 
+
+The tendency of the density for both groups is increase first, then it decreases.
+
+**Differences:**
+
+Engineering group has lots of scores that higher than 30, even some score are higher than 45, but the computing group's highest score is between 25 and 30.
+
+From score 10 to 15, engineering group has a sharp increase; from score 5 to 15, computing group increases slowly.
+
+For engineering group, the density starts to decrease from score 17.5 and it is a slowly decrease, but for computing group, the density starts to decrease from score 23 and it is a sharp decrease. 
+
+### (d)
+
+```{r}
+test1_test4 <- as.data.frame(Q1.df[,c(3,6)])
+head(test1_test4)
+```
+
+**Create the boxplot**
+```{r}
+boxplot(test1_test4,col = c("green", "red"),main = "The boxplot for the scores of Test4")
+```
+
+**Create the histogram of Test 1 **
+
+```{r}
+hist(test1_test4$Test1,main = "Histogram for the scores of Test1",xlab="Test1 Scores",ylab="Density", col = "blue",freq = FALSE)
+rug(jitter(test1_test4$Test1))
+lines(density(test1_test4$Test1),col="red",lwd=2)
+```
+
+We can see from the boxplot and the histogram above and (b), we can know both Test 1 and Test 4 are normal distribution, but the spread of the scores are not similar. From the boxplot, we can know the median of Test 4 is approxmate to 20, but the median of Test 1 is approximate to 8. Even the upper quartile of Test1 is smaller than the median of Test 4 which means the spread of Test 1 is not similar to Test 4. Moreover, from histogram Test1, we can directly know the number of the data in each block is even distribution. However, histogram Test 4 shows a huge difference between each block. Thus, the spread of them are not similar.
+
+### (e)
+
+**H0: the mean score for Test 4 is greater than 20**
+**Ha: the mean score for Test 4 is not greater than 20**
+
+```{r}
+n = length(df_test4$Test4) # the number of the variables
+
+mu = mean(df_test4$Test4) # find the average 
+std = sd(df_test4$Test4) # find the standard deviation
+
+alpha = 0.1
+mu0 = 20
+# search from the table, we can know the z score is approximate to 1.28
+z = 1.28
+
+my_z = (mu-mu0)/(std/sqrt(n))
+
+my_z
+```
+
+we can know my_z (t value) 0.9682 is less than 1.28, which means we reject H0. Thus the mean score for Test 4 is not greater than 20.
+
+
+## Question 2
+
+### (a)
+
+**Set the seed number**
+```{r}
+set.seed(7174865)
+```
+
+**Create a vector consisting of 100 observations, using rnorm() with mean MU = 65 and variance σ2 = 182.25**
+```{r}
+x <- rnorm(100,mean = 65, sd = sqrt(182.25))
+```
+
+**Create a vector consisting of 105 observations that are randomly generated from a uniform distribution between a = 42 and b = 92**
+```{r}
+y <- runif(105, min = 42, max = 92)
+```
+
+### (b)
+
+**The mean of the sample y is 67.9563**
+```{r}
+y_mean = mean(y)
+
+y_mean
+  
+```
+
+**The standard deviation of the sample y is 14.3764**
+```{r}
+y_std = sd(y)
+y_std
+```
+
+**Because we want to calculate 84% confidence interval, so 0.5 - (0.84/2) = 0.08. We should find corresponding z values in the table and get the value approximate to z = 1.41**
+
+```{r}
+z = 1.41
+```
+
+**Calculate an 84% confidence interval for the population mean of the Y values**
+
+```{r}
+y_a = y_mean - z * y_std
+
+y_a
+
+y_b = y_mean + z * y_std
+y_b
+```
+the 84% confidence interval: [47.6856,88.2270]
+This confidence interval means if we do sampling for 100 times, then where will be 84 times that the confidence interval include the population mean. we have 84% confidence that the population mean will be included between 47.6856 and 88.2270
+
+### (c)
+
+**H0:The population proportion of X values that are greater than 75 is less than 0.354 (p<0.354)** 
+**Ha:The population proportion of X values that are greater than 75 is not less than 0.354 (p>=0.354)**
+
+```{r}
+
+x_greater_than_75 = length(which(x>75))
+  
+pbar = x_greater_than_75 / length(x)
+
+p0 = 0.354
+
+n = length(x)
+
+z = (pbar-p0)/sqrt(p0*(1-p0)/n)
+
+z
+
+```
+The test statistic is -3.0112
+
+**compute the critical value at .05 significance level.**
+```{r}
+alpha = 0.05
+z.alpha = qnorm(1-alpha)
+-z.alpha
+
+```
+the critical value is -1.6449
+
+The test statistic -3.0112 is less than the critical value -1.6449. Hence, at .05 significance level, we do not reject the null hypothesis that the population proportion of X values that are greater than 75 is less than 0.354
+
+### (d)
+
+**H0:The population proportion of X values that are greater than the population proportion of Y values that are greater than 88 (p1 > p2)**
+**Ha:The population proportion of X values that are greater than the population proportion of Y values that are not greater than 88 (p1<=p2)**
+
+```{r}
+x_greater_than_75 = length(which(x>75))/length(x)
+y_greater_than_88 = length(which(y>88))/length(y)
+phat = (length(which(x>75))+length(which(y>88)))/(length(x)+length(y))
+
+z = (x_greater_than_75-y_greater_than_88)/sqrt(phat*(1-phat)*(1/length(x)+1/length(y)))
+
+z
+
+```
+
+The test statistic is 2.7479
+
+**compute the critical value at .1 significance level.**
+
+```{r}
+alpha = 0.1
+z.alpha = qnorm(1-alpha)
+z.alpha
+
+```
+the critical value is 1.2816
+
+The test statistic 2.7479 is greater than the critical value of 1.2816. Hence, at .1 significance level, we do not reject the null hypothesis that the population proportion of X values that are greater than the population proportion of Y values that are greater than 88.
+
+## Question 3
+
+### (a)
+
+```{r}
+HighSchool1_2008 = as.data.frame(Q3.df[which(Q3.df$HighSchool == 1),c(1,5)])
+HighSchool2_2008 = as.data.frame(Q3.df[which(Q3.df$HighSchool == 2),c(1,5)])
+HighSchool3_2008 = as.data.frame(Q3.df[which(Q3.df$HighSchool == 3),c(1,5)])
+HighSchool4_2008 = as.data.frame(Q3.df[which(Q3.df$HighSchool == 4),c(1,5)])
+```
+
+**The mean for high school 1 is :54.7596**
+
+```{r}
+mean(HighSchool1_2008$Year2008)
+
+```
+
+**The mean for high school 2 is :63.8238**
+
+```{r}
+mean(HighSchool2_2008$Year2008)
+
+```
+
+**The mean for high school 3 is :58.6031**
+
+```{r}
+mean(HighSchool3_2008$Year2008)
+
+```
+
+
+**The mean for high school 4 is : 48.8363**
+
+```{r}
+mean(HighSchool4_2008$Year2008)
+
+```
+
+### (b)
+
+**The sample variance for high school 1 is : 112.8124**
+
+```{r}
+var(HighSchool1_2008$Year2008)
+
+```
+
+**The sample variance for high school 2 is : 109.4298**
+
+```{r}
+var(HighSchool2_2008$Year2008)
+
+```
+
+**The sample variance for high school 3 is : 95.8147**
+
+```{r}
+var(HighSchool3_2008$Year2008)
+
+```
+
+**The sample variance for high school 4 is : 85.0609**
+
+```{r}
+var(HighSchool4_2008$Year2008)
+
+```
+
+### (c)
+
+**H0: the population variance of university entrance scores is the same for high school 1 and high school 2 (v1= v2) **
+**Ha: the population variance of university entrance scores is not the same for high school 1 and high school 2 (v1 != v2) **
+
+
+```{r}
+school1_mean = mean(HighSchool1_2008$Year2008)
+school1_var = var(HighSchool1_2008$Year2008)
+n1 = length(HighSchool1_2008$Year2008) 
+school2_mean = mean(HighSchool2_2008$Year2008)
+school2_var = var(HighSchool2_2008$Year2008)
+n2 = length(HighSchool2_2008$Year2008) 
+#degrees of freedom
+dfn1 = n1 -1 #98
+dfn2 = n2 -1 #100
+
+my_F =  school1_var / school2_var 
+
+
+alpha = 0.05
+
+my_F
+
+
+```
+Get the test statistic is approximate to 1.0309 , and the degrees of freedom is 98 , 100, alpha = 0.05
+
+```{r}
+qf(0.975,dfn1,dfn2)
+
+```
+
+we can know 1.4857 > 1.0309, so we fail to reject H0.The population variance of university entrance scores is the same for high school 1 and high school 2 significantly
+
+
+### (d)
+
+**H0: the population mean university entrance score for high school 2 minus the scores for high school 1 equal to 8 (mu2 - mu1 = 8)**
+**Ha: the population mean university entrance score for high school 2 is greater than that for high school 1 by more than 8. (mu2 - mu1 > 8)**
+
+```{r}
+
+Sp2 = ((n1-1)*school1_var + (n2-1)*school2_var)/(n1+n2-2)
+Sp2
+my_T = ((school2_mean-school1_mean)-8)/sqrt(Sp2*(1/n1 + 1/n2)) 
+my_T
+
+qt(0.95,n1+n2-2)
+
+
+```
+we can know that 0.7139 < 1.6526 which means we fail to reject H0. The population mean university entrance score for high
+school 2 is not greater than that for high school 1 by more than 8
+
+### (e)
+
+```{r}
+my_group <- c(rep("HighSchool1",99),rep("HighSchool2",101),rep("HighSchool3",98),rep("HighSchool4",102))
+
+dat<-rbind(HighSchool1_2008,HighSchool2_2008,HighSchool3_2008,HighSchool4_2008)
+dat <- data.frame(dat$Year2008,my_group)
+fit <- aov(dat$dat.Year2008~dat$my_group)
+summary(fit)
+
+hist(fit$res)
+plot(fit,which = 1)
+```
+
+We can see from the histogram that the response variable is normal distributed, and from the plot, they are independent. 
+
+
+### (f)
+
+```{r}
+school3_mean = mean(HighSchool3_2008$Year2008)
+n3 = length(HighSchool3_2008$HighSchool)
+school4_mean = mean(HighSchool4_2008$Year2008)
+n4 = length(HighSchool4_2008$HighSchool)
+highschool_mean = mean(Q3.df$Year2008)
+
+SST = n1*(school1_mean-highschool_mean)^2 +n2*(school2_mean-highschool_mean)^2 +n3 * (school3_mean-highschool_mean)^2+n4*(school4_mean-highschool_mean)^2
+
+SST
+
+```
+
+The SST is 12141.2657
+
+### (g)
+
+**H0: the population mean university entrance score is the same for all four high schools.**
+**Ha: there is at least two of the population means are not equal**
+
+**get the SSE = 39883.7862**
+```{r}
+school3_var = var(HighSchool3_2008$Year2008)
+school4_var = var(HighSchool4_2008$Year2008)
+
+SSE = (n1-1)*school1_var + (n2-1)*school2_var + (n3-1)*school3_var + (n4-1)*school4_var
+SSE
+
+```
+
+**get the MST = SST/(4-1) = 4047.0886**
+
+```{r}
+MST = SST/(4-1)
+
+MST
+
+```
+
+**get the MSE = SSE/(400-4)=100.7166**
+
+```{r}
+MSE = SSE/(400-4)
+MSE 
+```
+
+**Get the f and qf**
+
+```{r}
+f= MST/MSE
+f
+qf(0.95,4-1,400-4)
+```
+We can know that 40.1829 > 2.6274, so we reject H0.It means the population mean university entrance score is not the same for all four high schools.
+
+## Question 4
+
+### (a)
+
+```{r}
+Age5 = as.data.frame(Q4.df$Age5)
+names(Age5) <- c("Age5")
+Age25 = as.data.frame(Q4.df$Age25)
+names(Age25) <- c("Age25")
+plot(Age5$Age5,Age25$Age25,xlab="Age 5",ylab = "Age 25", main = "Scatter plot of the aptitude test scores at age 25 and 5 ",pch = 21,col=c("red", "blue"))
+legend("top", legend=c("Age 5","Age 25"),col=c("red","blue"),pch=21)           
+```
+
+We can see from the graph that the two variables are showing a tendency of positive correlation.
+
+### (b)
+
+**H0: The correlation between the aptitude test scores at age 25 and the aptitude test scores at age 5 is equal to zero**
+**Ha: the correlation between the aptitude test scores at age 25 and the aptitude test scores at age 5 is greater than zero.**
+
+**get T = 15.4431**
+```{r}
+r = cor(Age5$Age5,Age25$Age25)
+
+my_T = r * sqrt(length(Age5$Age5)-2) / sqrt(1-r^2) 
+
+my_T
+
+```
+
+**use qt() to perform lower-tail test **
+```{r}
+qt(0.95,length(Age5$Age5)-2)
+
+```
+
+We can see our T 15.4431 > 1.6526, so we reject H0.It means the correlation between the aptitude test scores at age 25 and the aptitude test scores at age 5 is greater than zero.
+
+### (c)
+
+```{r}
+my_model = lm(Age25$Age25~Age5$Age5)
+summary(my_model)
+```
+
+From the table we get, we can know, the intercept is -1.36072, the slope = 1.02665
+
+Thus, we get the equation Age25 = -1.3607 +  1.0267*Age5
+
+### (d)
+
+```{r}
+plot(my_model, which = 1)
+hist(my_model$res,breaks = 15)
+```
+
+From the second graph, the residuals violates normal distribution.
+From the first graph, it doesn't violate Homoscedasticity hypothesis.
+
+### (e)
+**H0:the intercept is equal to 4**
+**H1:the intercept is less than 4**
+
+**From the summary(my_model), we can know the intercept is -1.36072, and the std.error is 3.34964 , degrees of freedom is 198**
+```{r}
+test_t = (-1.36072 - 4)/ 3.34964
+test_t
+
+# upper tail test
+alpha = 0.1
+qt(alpha,198)
+
+
+```
+
+We can see from the result, our t -1.600387 < -1.285842, so we reject H0. It means the intercept is less than 4.
